@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='UTF-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<script type='text/javascript' src='https://numtseng.com/modules/konekti/Konekti.js'></script>
+</head>
+<body>
+	<div id='out' style='position:relative; height:100%; width:100%'></div>
+	<div id='error' class='w3-container w3-text-green'></div>
+	<script>
+		document.getElementById('out').done = false
+		
+  		var terminal = null	
+		console.log = function(){
+			var s = ''
+			for( var i=0; i<arguments.length; i++) s += arguments[i]
+			terminal.output(s+'\n')
+		}	
+				
+		Konekti.uses('terminal')
+		function KonektiMain(){ terminal = Konekti.terminal({'id':'out','maximum':1000000, 'initial':''}) }
+</script>
+</body>
+</html>
