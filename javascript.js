@@ -92,6 +92,7 @@ class JavaScript extends Client{
 		  	"header":{"plugin":"btn","id":this.btnID, "icon":"fa fa-play","caption":this.captionRun,
 		  	  "options":"w3-bar-item w3-medium","onclick":{"client":this.id, "method":"run"}}
 		  },
+		  // Set the url where you store the jsconsole.html, by default it uses the jsconsole.html used by numtseng.com 
 		  "two":{"plugin":"iframe","id":this.consoleID,"src":"https://numtseng.com/modules/js/jsconsole.html"}
 		}
 		)
