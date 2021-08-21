@@ -40,7 +40,6 @@ class JSServer{
     			"document.getElementById('error').innerHTML = e.message\n"+
     			"}\n"+
  				"document.getElementById('out').done = true\n"
-		console.log(code)		
 		iframe.contentWindow.eval(code)
 		function check(){
 			var out = iframe.contentWindow.document.getElementById('out')
@@ -74,28 +73,34 @@ class JavaScript extends Client{
 	 */
 	constructor(config){
 		super(config.id+"JS")
-		this.running = false
 		this.server = null
+		this.running = false
 		this.captionRun = config.captionRun || ''
 		this.captionStop = config.captionStop || ''
 		this.editorID = config.editor || 'coderJS'
 		this.consoleID = config.console || 'viewerJS'
-		this.btnID = config.run || 'runJS'
 		var type = config.type || 'col'
+		var maxCharsConsole = config.maximum || 1000000
+		var initial = config.initial || ''
 		
-		Konekti.split( 
-		  { "id":config.id, "type":type,
+		var aceCfg = { "plugin":"ace","id":this.editorID,"mode":"javascript","initial":initial }
+		var split = { "id":config.id, "type":type,
 		  "start":60,
-		  "one":{
-		  	"plugin":"hcf", 
-		  	"content":{ "plugin":"ace","id":this.editorID,"mode":"javascript","initial":"x=prompt('?')\nconsole.log(x+3)\n" },
-		  	"header":{"plugin":"btn","id":this.btnID, "icon":"fa fa-play","caption":this.captionRun,
-		  	  "options":"w3-bar-item w3-medium","onclick":{"client":this.id, "method":"run"}}
-		  },
 		  // Set the url where you store the jsconsole.html, by default it uses the jsconsole.html used by numtseng.com 
 		  "two":{"plugin":"iframe","id":this.consoleID,"src":"https://numtseng.com/modules/js/jsconsole.html"}
 		}
-		)
+		
+		this.btnID = config.run || 'runPy'
+		var btnCfg = {"plugin":"btn","id":this.btnID, "icon":"fa fa-play","caption":this.captionRun,
+		  	  "options":"w3-bar-item w3-medium","onclick":{"client":this.id, "method":"run"}}
+		var btn = Konekti.client( this.btnID )
+		if( btn === undefined || btn === null )
+		 split.one =  { "plugin":"hcf", "content": aceCfg, "header":btnCfg}
+		else{
+			btn.update(btnCfg)
+			split.one = aceCfg
+		}
+		Konekti.split( split )
 	}
 	
 	stopButton(){
