@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <script type='text/javascript' src='https://numtseng.com/modules/konekti/Konekti.js'></script> 
+    <script type='text/javascript' src='https://numtseng.com/modules/js/javascript.js'></script> 
+</head>
+<body>   
+<div id='main' style='height:100%;width:100%'></div>
+<script>
+Konekti.uses('hcf','split')
+
+function KonektiMain(){
+	var client = new Client('client')
+	var urlParams = new URLSearchParams(window.location.search)
+	var lang = urlParams.get('lang')
+	if( lang === undefined || lang === null ) lang = window.navigator.language
+	lang = lang.split('-')[0]
+	if( lang != 'es' && lang != 'en' ) lang = 'en'
+
+	Konekti.hcf("main", 
+		{ "plugin":"html" },
+		{"plugin":"header","icon":"fa fa-lightbulb-o", "caption":lang=='en'?"Simple JavaScript Interpreter":"Interprete de JavaScript Simple", "h":3},
+		{"plugin":"header","caption":lang=='en'?"Developed by Professor Jonatan Gomez, Ph. D.":"Desarrollado por el Profesor Jonatan Gómez, Ph. D.", "h":6}, 		
+		function(){
+			// This function is called when header/content/footer gui is ready
+			var config = {'id':'main-content', 'captionRun':lang=='en'?'Run':'Ejecutar', 'captionStop':lang=='en'?'Stop':'Parar',
+			"initial":lang=='en'?"x = prompt('Enter value')\nconsole.log('Value:'+x)\n":"x = prompt('Digite valor')\nconsole.log('Valor:'+x)\n" }
+			var javas =  new JavaScript(config)
+		}
+	)
+}
+
+</script>   
+</body>
+</html>
